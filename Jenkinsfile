@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
 
@@ -12,7 +11,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    sh 'python -m pip install -r requirements.txt'
+                    bat 'python -m pip install -r requirements.txt'
                 }
             }
         }
@@ -20,7 +19,7 @@ pipeline {
         stage('Execute Test') {
             steps {
                 script {
-                    sh 'python test.py'
+                    bat 'python test.py'
                 }
             }
         }
@@ -28,11 +27,13 @@ pipeline {
         stage('Deploying') {
             steps {
                 script {
-                    if (env.BRANCH_NAME == 'main') {
-                        echo 'Deploying to production'
-                    } else {
-                        echo 'Deploying to UAT'
-                    }
+                    bat '''
+                    if "%BRANCH_NAME%"=="main" (
+                        echo Deploying to production
+                    ) else (
+                        echo Deploying to UAT
+                    )
+                    '''
                 }
             }
         }
